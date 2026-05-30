@@ -1,0 +1,35 @@
+package miso-lynx
+
+depends = idris-miso
+
+sourcedir = "src"
+
+modules = Miso.Lynx,
+          Miso.Lynx.Element,
+          Miso.Lynx.FFI,
+          Miso.Lynx.Event,
+          Miso.Lynx.JSON,
+          Miso.Lynx.Element.Frame,
+          Miso.Lynx.Element.Frame.Property,
+          Miso.Lynx.Element.Image,
+          Miso.Lynx.Element.Image.Event,
+          Miso.Lynx.Element.Image.Method,
+          Miso.Lynx.Element.Image.Property,
+          Miso.Lynx.Element.List,
+          Miso.Lynx.Element.List.Event,
+          Miso.Lynx.Element.List.Method,
+          Miso.Lynx.Element.List.Property,
+          Miso.Lynx.Element.ScrollView,
+          Miso.Lynx.Element.ScrollView.Event,
+          Miso.Lynx.Element.ScrollView.Method,
+          Miso.Lynx.Element.ScrollView.Property,
+          Miso.Lynx.Element.Text,
+          Miso.Lynx.Element.Text.Event,
+          Miso.Lynx.Element.Text.Method,
+          Miso.Lynx.Element.Text.Property,
+          Miso.Lynx.Element.View,
+          Miso.Lynx.Element.View.Event,
+          Miso.Lynx.Element.View.Method,
+          Miso.Lynx.Element.View.Property
+
+opts = "--codegen javascript"

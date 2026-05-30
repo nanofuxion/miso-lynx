@@ -1,0 +1,13 @@
+package idris-miso
+
+sourcedir = "src"
+
+modules = Miso.Types,
+          Miso.Attr,
+          Miso.Event,
+          Miso.CSS,
+          Miso.App,
+          Miso.Effect,
+          Miso.Render
+
+opts = "--codegen javascript"

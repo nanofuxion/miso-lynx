@@ -1,0 +1,11 @@
+package miso-lynx-examples
+
+depends = idris-miso, miso-lynx
+
+sourcedir = "counter"
+
+main = Main
+
+executable = counter
+
+opts = "--codegen javascript"

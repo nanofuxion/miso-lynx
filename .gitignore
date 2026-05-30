@@ -1,4 +1,11 @@
-# haskell
+# idris
+build/
+examples/build/
+depends/
+*.ttc
+*.ttm
+
+# haskell (legacy)
 .stack-work/
 dist-newstyle/
 cabal.project.local
@@ -27,8 +34,10 @@ package-lock.json
 node_modules/
 coverage/
 
-# typescript
-*.js
+# typescript / generated js
+ts/**/*.js
+js/miso-lynx.js
+dist/
 
 # haddocks
 haddocks/

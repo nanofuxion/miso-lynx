@@ -1,26 +1,34 @@
 import { LynxEncodePlugin, LynxTemplatePlugin } from "@lynx-js/template-webpack-plugin";
 import { defineConfig } from "@rspack/cli";
 
+/** SWC downlevel transforms for Lynx main-thread (lepusng / ES2019 baseline) */
+const mainThreadSwc = {
+  jsc: {
+    parser: { syntax: "ecmascript" },
+    loose: true,
+  },
+  env: {
+    targets: { chrome: "80" },
+    include: [
+      "transform-nullish-coalescing-operator",
+      "transform-optional-chaining",
+      "transform-class-properties",
+      "transform-private-methods",
+    ],
+  },
+};
+
 export default defineConfig({
   entry: {
     main: './dist/all.js',
   },
   module: {
-	rules: [
+    rules: [
       {
-		test: /\.js$/,
-		use: [{
-          loader: "builtin:swc-loader",
-		  options: {
-		    jsc: {
-				parser: {
-				    syntax: "ecmascript"
-  		 		}
-		    }
-		  }
-        }]
-      }
-	]
+        test: /\.js$/,
+        use: [{ loader: "builtin:swc-loader", options: mainThreadSwc }],
+      },
+    ],
   },
   plugins: [
     new LynxEncodePlugin(),
@@ -28,15 +36,9 @@ export default defineConfig({
       filename: "main.lynx.bundle",
       intermediate: "main",
     }),
-    /**
-     * @param {import("@rspack/core").Compiler} compiler
-     */
     (compiler) => {
       compiler.hooks.thisCompilation.tap(
         "MarkMainThreadWebpackPlugin",
-        /**
-         * @param {import("@rspack/core").Compilation} compilation
-         */
         (compilation) => {
           compilation.hooks.processAssets.tap(
             "MarkMainThreadWebpackPlugin",
@@ -51,5 +53,5 @@ export default defineConfig({
         },
       );
     },
-  ]
+  ],
 });

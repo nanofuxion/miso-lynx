@@ -1,16 +1,41 @@
 #!/usr/bin/env bash
-set -x
+set -euo pipefail
 
-if [ ! -f dist/ ]; then
-  rm -rv dist/
-fi
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+cd "$ROOT"
 
-cabal clean
-mkdir -pv dist/
+echo "==> Building TypeScript Lynx bridge"
 bun run js
-cp -v $(nix-build -A miso-lynx-examples-ghcjs9122)/bin/counter.jsexe/all.js .
-chmod +rw all.js
-bun build --minify-whitespace all.js --target=bun --outfile=dist/all.js
-file dist/all.js
+
+echo "==> Building idris-miso"
+idris2 --build idris-miso/idris-miso.ipkg
+idris2 --install idris-miso/idris-miso.ipkg
+
+echo "==> Building miso-lynx library"
+idris2 --build miso-lynx.ipkg
+idris2 --install miso-lynx.ipkg
+
+echo "==> Building counter example"
+idris2 --build examples/miso-native-examples.ipkg
+
+COUNTER_JS="examples/build/exec/counter"
+
+echo "==> Patching Idris output for Lynx main-thread"
+node nix/patch-lynx-main.mjs "$COUNTER_JS"
+
+echo "==> Assembling all.js"
+mkdir -p dist
+cat js/miso.js \
+    js/miso-lynx.js \
+    idris-miso/js/runtime.js \
+    "$COUNTER_JS" \
+    > dist/all.raw.js
+
+echo "==> Minifying"
+bun build --minify-whitespace dist/all.raw.js --target=browser --outfile=dist/all.js
+
+echo "==> Bundling Lynx template"
 bun run bundle
-http-server dist
+
+echo "==> Done: dist/main.lynx.bundle"
+file dist/main.lynx.bundle

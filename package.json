@@ -1,13 +1,17 @@
 {
   "name": "miso-lynx",
   "version": "1.9.0",
-  "description": "miso-lynx: A tasty Haskell mobile framework",
+  "description": "miso-lynx: A tasty Idris2 mobile framework",
   "scripts": {
-    "clean": "tsc --build --clean && find ts -name '*~' -or -name '*.js' -delete",
+    "clean": "tsc --build --clean && find ts -name '*~' -or -name '*.js' -delete && idris2 --clean miso-lynx.ipkg && idris2 --clean idris-miso/idris-miso.ipkg && idris2 --clean examples/miso-native-examples.ipkg",
     "watch": "tsc --project tsconfig.lib.json --watch",
     "build": "bun build --outfile=js/miso-lynx.js ./ts/miso-lynx.ts --target=browser --minify-whitespace",
     "js": "bun run build",
-    "bundle": "rspack build"
+    "bundle": "rspack build",
+    "idris": "idris2 --build miso-lynx.ipkg",
+    "lynx-bundle": "./reload",
+    "serve": "bun serve.mjs",
+    "preview": "./reload && bun serve.mjs"
   },
   "type": "module",
   "module": "ts/miso-lynx.ts",
@@ -18,7 +22,9 @@
   "keywords": [
     "miso",
     "virtual-dom",
-    "haskell"
+    "idris",
+    "idris2",
+    "lynx"
   ],
   "author": "dmijo",
   "license": "BSD-3-Clause",
@@ -33,8 +39,9 @@
   "homepage": "https://haskell-miso.org",
   "devDependencies": {
     "@happy-dom/global-registrator": "^17.6.3",
+    "@types/bun": "latest",
     "prettier": "3.5.3",
-    "@types/bun": "latest"
+    "qrcode-terminal": "^0.12.0"
   },
   "files": [
     "ts/miso-lynx.ts",

@@ -3,7 +3,8 @@ import { ElementRef } from '@lynx-js/type-element-api';
 
 const eventContext : EventContext<Node> = {
   addEventListener : (mount : Element, event : string, listener, capture : boolean) => {
-    return __AddEvent(mount, 'catchEvent', event, { type : 'worklet', value : listener });
+    const type = capture ? 'capture-bind' : 'bindEvent';
+    return __AddEvent(mount, type, event, { type : 'worklet', value : listener });
   },
   removeEventListener : (mount : Element, event : string, listener, capture : boolean) => {
       /* dmj: todo implement */

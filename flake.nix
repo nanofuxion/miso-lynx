@@ -1,14 +1,24 @@
 {
+  description = "miso-lynx — Idris2 Lynx mobile framework";
+
   inputs = {
-    miso.url = "github:dmjio/miso";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = inputs: 
-    inputs.miso.inputs.flake-utils.lib.eachDefaultSystem (system: {
-      devShells = {
-        default = inputs.miso.outputs.devShells.${system}.default;
-        native = inputs.miso.outputs.devShells.${system}.native;
-        wasm = inputs.miso.outputs.devShells.${system}.wasm;
-      };
-    });
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ (import ./nix/overlay.nix) ];
+        };
+      in {
+        packages.default = pkgs.counter-bundle;
+        packages.counter-bundle = pkgs.counter-bundle;
+
+        devShells.default = pkgs.mkShell {
+          buildInputs = with pkgs; [ idris2 bun nodejs ];
+        };
+      });
 }
