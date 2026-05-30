@@ -37,5 +37,7 @@ bun build --minify-whitespace dist/all.raw.js --target=browser --outfile=dist/al
 echo "==> Bundling Lynx template"
 bun run bundle
 
-echo "==> Done: dist/main.lynx.bundle"
+cp dist/main.lynx.bundle examples/main.lynx.bundle
+
+echo "==> Done: dist/main.lynx.bundle (copied to examples/main.lynx.bundle)"
 file dist/main.lynx.bundle

@@ -12,7 +12,7 @@ import { existsSync } from 'node:fs';
 import os from 'node:os';
 import qrcode from 'qrcode-terminal';
 
-const root = join(fileURLToPath(new URL('.', import.meta.url)), '..', 'dist');
+const root = join(fileURLToPath(new URL('.', import.meta.url)), 'dist');
 const preferred = Number(process.argv[2] ?? process.env.PORT ?? 8080);
 const host = process.env.HOST ?? '0.0.0.0';
 
@@ -104,7 +104,7 @@ const phoneUrl = ip
   : `http://<your-lan-ip>:${port}/main.lynx.bundle`;
 
 console.log('');
-console.log('  miso-lynx2 dev server');
+console.log('  miso-lynx dev server');
 console.log('  ─────────────────────');
 console.log(`  Listening:  ${host}:${port}`);
 console.log(`  Phone URL:  ${phoneUrl}`);
